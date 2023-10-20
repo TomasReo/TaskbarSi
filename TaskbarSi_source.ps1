@@ -1,14 +1,21 @@
 ﻿Add-Type -AssemblyName System.Windows.Forms
+[System.Reflection.Assembly]::LoadWithPartialName("System.Windows.Forms")
 
+# Kontrola verze OS
+$WinVer = [System.Environment]::OSVersion.Version.Build
+
+if ($WinVer -ge 22000) {
 
 $Form = New-Object Windows.Forms.Form
 $Form.Text = "Nástroj pro změnu velikosti ikon hlavního panelu"
-$Form.Width = 500
+$Form.Width = 510
 $Form.Height = 200
 
 $Vert = 80
 $bWidth = 100
 $bHeight = 50
+
+
 
 function Set-TaskbarSize {
     param (
@@ -26,7 +33,7 @@ Stop-Process -Name explorer -Force
 
 $Nadpis = New-Object Windows.Forms.Label
 $Nadpis.Text = "Vyberte požadovanou velikost ikon hlavního panelu:"
-$Nadpis.Location = New-Object Drawing.Point(50, 20)
+$Nadpis.Location = New-Object Drawing.Point(45, 25)
 $Nadpis.Font = New-Object System.Drawing.Font("Segoe UI", 12, [System.Drawing.FontStyle]::Bold)
 $Nadpis.AutoSize = $true
 
@@ -63,4 +70,10 @@ $Form.Controls.Add($SetSi0)
 $Form.Controls.Add($SetSi1)
 $Form.Controls.Add($SetSi2)
 
-$Form.ShowDialog() | Out-Null
+$Form.ShowDialog() | Out-Null }
+
+else {
+$message = "Nástroj je určený pouze pro Windows 11!"
+$title = "Chyba"
+[System.Windows.Forms.MessageBox]::Show($message, $title, [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Warning)
+}
